@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meter maid</title>
+  </head>
+  <body>
+    <div class="container text-center position-absolute top-50 start-50 translate-middle">
+        <div class="col">
+          <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="Enter a last meter balace" aria-label="Meter balance" id="meter-balance" aria-describedby="meter-balance">
+            <button class="btn btn-primary" type="button" id="save">Save</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="alert alert-primary" role="alert" id="info-box">
+              Pick the dates to check
+            </div> 
+            <div class="btn-group" role="group" aria-label="Button group">
+              <button class="btn btn-primary" type="button" time-period="day">Get cost/day</button>
+              <button class="btn btn-primary" type="button" time-period="month">Get cost/month</button>
+            </div>            
+            
+          </div>          
+        </div>        
+
+        <div class="col">
+          <ul class="list-group" id="balance-list-group"></ul>
+        </div>
+      </div>
+  </body>
+</html>
+
+<div class="modal" tabindex="-1" id="delete-selected-balances">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete the selected balance entries</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+        <button type="button" class="btn btn-primary">No</button>
+      </div>
+    </div>
+  </div>
+</div>
