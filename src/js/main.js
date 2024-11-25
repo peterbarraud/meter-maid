@@ -145,7 +145,7 @@ document.querySelector('#rate-info').addEventListener("click", (e) => {
     innerHTMLString += '<tr>';
     innerHTMLString += `<td>&#8377;${Math.round(rateperday)}</td>`;
     innerHTMLString += `<td>&#8377;${Math.round(ratepermonth)}</td>`;
-    innerHTMLString += `<td>${Math.round(daystolast)} (${lastdate})</td>`;
+    innerHTMLString += `<td>${Math.round(daystolast)} <span class="badge text-bg-success">${lastdate}</span></td>`;
     innerHTMLString += '</tr></table>';
     infoBoxUpdate(innerHTMLString, InfoMessageType.INFO)
   } else {
