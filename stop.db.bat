@@ -2,7 +2,7 @@ ECHO off
 
 IF EXIST mdb.running (
 	del mdb.running
-	the.dr.nefario.backside\mariadb.min\bin\mysqladmin -u root shutdown || (
+	backoffice\mariadb.min\bin\mysqladmin -u root shutdown || (
 		pause
 	)
 ) ELSE (

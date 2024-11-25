@@ -8,7 +8,7 @@ IF EXIST mdb.running (
 	ECHO Do NOT delete the mdb.running file manually. That is deleted by 
 	ECHO MariaDB running > mdb.running
 	ECHO Do NOT close this using Ctrl+C. Close it by running (double-click) 
-	the.dr.nefario.backside\mariadb.min\bin\mysqld || (
+	backoffice\mariadb.min\bin\mysqld || (
 		pause
 	)
 )

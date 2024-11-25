@@ -1,8 +1,8 @@
 ECHO off
 
 SET phpport=8089
-SET startdir=the.dr.nefario.backside
-SET phpdir=the.dr.nefario.backside\php.min
+SET startdir=backoffice
+SET phpdir=%startdir%\php.min
 
 ECHO Running PHP on PORT %phpport%
 
