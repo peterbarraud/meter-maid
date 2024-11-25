@@ -22,7 +22,7 @@ let balanceData = [];
 let restURL = 'http://localhost:8089/services/rest.api.php';
 
 
-function infoBoxUpdate(infoMsg, infoMsgType){
+let infoBoxUpdate = (infoMsg, infoMsgType) =>{
   let classList = document.querySelector("#info-box").classList
   classList.remove(...classList);
   classList.add("alert");
@@ -36,7 +36,7 @@ function infoBoxUpdate(infoMsg, infoMsgType){
   }
 }
 
-function getallbalances(){
+let getallbalances = () => {
   fetch(`${restURL}/getallbalances/`, {
     method: "GET"
 }).then(response => response.json())
@@ -81,7 +81,7 @@ function getallbalances(){
 
 
 
-window.onload = function(){
+window.onload = () => {
   if(window.location.href.includes("localhost")){
     restURL = 'http://localhost:8089/services/rest.api.php'
   } else {
@@ -93,7 +93,7 @@ window.onload = function(){
 };
 
 
-document.querySelector("#save").addEventListener("click", function (e) {
+document.querySelector("#save").addEventListener("click", (e) => {
   if (document.querySelector("#meter-balance").value && parseInt(document.querySelector("#meter-balance").value) >= 0){
     fetch(`${restURL}/savebalance/`, {
       method: "POST",
@@ -114,7 +114,15 @@ document.querySelector("#save").addEventListener("click", function (e) {
     }
   
 });
-document.querySelector('#rate-info').addEventListener("click", function(){
+
+let getLastDate = (date, days) => {
+  let monthsOfYear = {0:'Jan',0:'Feb',2:'Mar',3:'Apr',4:'May',5:'Jun',6:'Jul',7:'Aug',8:'Sept',9:'Oct',10:'Nov',11:'Dec',};
+  var result = new Date(); // not instatiated with date!!! DANGER
+  result.setDate(date.getDate() + days);
+  // return result.getDate();
+  return `${result.getDate()} ${monthsOfYear[result.getMonth()]}, ${result.getFullYear()}`;
+}
+document.querySelector('#rate-info').addEventListener("click", (e) => {
   if (document.querySelectorAll("[name='list-group-item']:checked").length == 2){
     // let date2 = document.querySelectorAll("[name='list-group-item']:checked")[1].datetime;
     let date1 = balanceData[document.querySelectorAll("[name='list-group-item']:checked")[0].id].datetime;
@@ -124,12 +132,20 @@ document.querySelector('#rate-info').addEventListener("click", function(){
     let ratepermillisecond = Math.abs(balance1 - balance2)/Math.abs((date1 - date2));
     let rateperday = ratepermillisecond*1000*3600*24;
     let ratepermonth = rateperday*(365.25/12);
-    let daystolast = balance1 < balance2 ? Math.round(balance1/rateperday) : Math.round(balance2/rateperday);
+    let daystolast = -1;
+    let lastdate = null;
+    if (balance1 < balance2){
+      daystolast = Math.round(balance1/rateperday);
+      lastdate = getLastDate((new Date(date1)),daystolast);
+    } else if (balance1 > balance2){
+      daystolast = Math.round(balance2/rateperday);
+      lastdate = getLastDate((new Date(date2)),daystolast);
+    }
     let innerHTMLString = '<table class="table table-bordered"><tr><th>Daily</th><th>Monthly</th><th>Days to go</th></tr>';
     innerHTMLString += '<tr>';
     innerHTMLString += `<td>&#8377;${Math.round(rateperday)}</td>`;
     innerHTMLString += `<td>&#8377;${Math.round(ratepermonth)}</td>`;
-    innerHTMLString += `<td>${Math.round(daystolast)}</td>`;
+    innerHTMLString += `<td>${Math.round(daystolast)} (${lastdate})</td>`;
     innerHTMLString += '</tr></table>';
     infoBoxUpdate(innerHTMLString, InfoMessageType.INFO)
   } else {
