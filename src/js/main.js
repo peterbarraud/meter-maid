@@ -59,19 +59,21 @@ let getallbalances = () => {
         }
       )
     );
-    let innerHTMLText = `&#8377;${balanceData[balanceObject.id].value}; `;
-    innerHTMLText += `${balanceData[balanceObject.id].datetime.getDate()} `;
-    innerHTMLText += `${monthsOfYear[balanceData[balanceObject.id].datetime.getMonth()]}, `;
-    innerHTMLText += `${balanceData[balanceObject.id].datetime.getFullYear()}, `;
+    let innerHTMLText = `&#8377;${balanceData[balanceObject.id].value}; 
+    ${balanceData[balanceObject.id].datetime.getDate()} 
+    ${monthsOfYear[balanceData[balanceObject.id].datetime.getMonth()]}, 
+    ${balanceData[balanceObject.id].datetime.getFullYear()},`;
+    let formattedMinutes = balanceData[balanceObject.id].datetime.getMinutes();
+    if(balanceData[balanceObject.id].datetime.getMinutes() < 10){
+      formattedMinutes = `0${balanceData[balanceObject.id].datetime.getMinutes()}`;
+    }
+
     if (balanceData[balanceObject.id].datetime.getHours() == 12){
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()}:`;
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} PM`;
+      innerHTMLText += ` ${balanceData[balanceObject.id].datetime.getHours()}:${formattedMinutes} PM`;
     } else if (balanceData[balanceObject.id].datetime.getHours() < 12){
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()}:`;
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} AM`;
+      innerHTMLText += ` ${balanceData[balanceObject.id].datetime.getHours()}:${formattedMinutes} AM`;
     } else {
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()-12}:`;
-      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} PM`;
+      innerHTMLText += ` ${balanceData[balanceObject.id].datetime.getHours()-12}:${formattedMinutes} PM`;
     }
     
     listGroupItem.appendChild(
@@ -150,35 +152,15 @@ document.querySelector('#rate-info').addEventListener("click", (e) => {
       daystolast = Math.round(balance2/rateperday);
       lastdate = getLastDate((new Date(date2)),daystolast);
     }
-    let innerHTMLString = '<table class="table table-bordered"><tr><th>Daily</th><th>Monthly</th><th>Days to go</th></tr>';
-    innerHTMLString += '<tr>';
-    innerHTMLString += `<td>&#8377;${Math.round(rateperday)}</td>`;
-    innerHTMLString += `<td>&#8377;${Math.round(ratepermonth)}</td>`;
-    innerHTMLString += `<td>${Math.round(daystolast)} <span class="badge text-bg-success">${lastdate}</span></td>`;
-    innerHTMLString += '</tr></table>';
+    let innerHTMLString = `<table class="table table-bordered"><tr><th>Daily</th><th>Monthly</th><th>Days to go</th></tr>
+    <tr>
+    <td>&#8377;${Math.round(rateperday)}</td>
+    <td>&#8377;${Math.round(ratepermonth)}</td>
+    <td>${Math.round(daystolast)} <span class="badge text-bg-success">${lastdate}</span></td>
+    </tr></table>`
     infoBoxUpdate(innerHTMLString, InfoMessageType.INFO)
   } else {
     infoBoxUpdate("You need to select <b>ONLY</b> two dates", InfoMessageType.ERR)
   }
 
 })
-document.querySelectorAll('[time-period]').forEach(button => 
-  button.addEventListener('click', () => {
-    if (document.querySelectorAll("[name='list-group-item']:checked").length == 2){
-      // let date2 = document.querySelectorAll("[name='list-group-item']:checked")[1].datetime;
-      let date1 = balanceData[document.querySelectorAll("[name='list-group-item']:checked")[0].id].datetime;
-      let date2 = balanceData[document.querySelectorAll("[name='list-group-item']:checked")[1].id].datetime;
-      let balance1 = balanceData[document.querySelectorAll("[name='list-group-item']:checked")[0].id].value;
-      let balance2 = balanceData[document.querySelectorAll("[name='list-group-item']:checked")[1].id].value;
-      let ratepermillisecond = Math.abs(balance1 - balance2)/Math.abs((date1 - date2));
-      let outputrate = ratepermillisecond*1000*3600*24;
-      if (button.attributes['time-period'].value == "month"){
-        outputrate = outputrate*(365.25/12);
-      }
-      infoBoxUpdate(`Rate per day: &#8377;${Math.round(outputrate)}`, InfoMessageType.INFO)
-    } else {
-      infoBoxUpdate("You need to select <b>ONLY</b> two dates", InfoMessageType.ERR)
-    }
-      
-  })
-);
