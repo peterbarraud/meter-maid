@@ -1,14 +1,11 @@
 # The meter maid
 
-(Preferably run the steps 1 to 3 in `Git bash`)
+(Preferably run the steps 1 to 3 in `Git bash`. Others in an editor like VS Code.)
 1. Clone this repo
 1. cd into the resultant folder
 1. Run the following commands to get the Dr. Nefario servers
 ```
-git clone https://github.com/peterbarraud/the.dr.nefario.servers.git
-mv the.dr.nefario.servers/mariadb.min/ backoffice/
-mv the.dr.nefario.servers/php.min/ backoffice/
-rm -fr the.dr.nefario.servers/
+git clone https://github.com/peterbarraud/the.dr.nefario.servers.git && mv the.dr.nefario.servers/mariadb.min/ backoffice/ && mv the.dr.nefario.servers/php.min/ backoffice/ && rm -fr the.dr.nefario.servers/
 ```
 4. Start mariadb with: `db.start.bat`
 1. Sign into mariadb with: `login.root.bat`
