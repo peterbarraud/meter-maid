@@ -20,6 +20,7 @@ Object.freeze(InfoMessageType);
 let balanceData = [];
 
 let restURL = 'http://localhost:8089/services/rest.api.php';
+let monthsOfYear = {0:'Jan',0:'Feb',2:'Mar',3:'Apr',4:'May',5:'Jun',6:'Jul',7:'Aug',8:'Sept',9:'Oct',10:'Nov',11:'Dec',};
 
 
 let infoBoxUpdate = (infoMsg, infoMsgType) =>{
@@ -58,13 +59,27 @@ let getallbalances = () => {
         }
       )
     );
-
+    let innerHTMLText = `&#8377;${balanceData[balanceObject.id].value}; `;
+    innerHTMLText += `${balanceData[balanceObject.id].datetime.getDate()} `;
+    innerHTMLText += `${monthsOfYear[balanceData[balanceObject.id].datetime.getMonth()]}, `;
+    innerHTMLText += `${balanceData[balanceObject.id].datetime.getFullYear()}, `;
+    if (balanceData[balanceObject.id].datetime.getHours() == 12){
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()}:`;
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} PM`;
+    } else if (balanceData[balanceObject.id].datetime.getHours() < 12){
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()}:`;
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} AM`;
+    } else {
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getHours()-12}:`;
+      innerHTMLText += `${balanceData[balanceObject.id].datetime.getMinutes()} PM`;
+    }
+    
     listGroupItem.appendChild(
       Object.assign(
         document.createElement("label"),
         {
           class: "form-check-label",
-          innerHTML:`&#8377;${balanceObject.value}; ${balanceObject.balancetime_ts}`,
+          innerHTML:innerHTMLText,
           style:"margin-left:5px"
         }
       )
@@ -79,19 +94,14 @@ let getallbalances = () => {
 })
 }
 
-
-
 window.onload = () => {
   if(window.location.href.includes("localhost")){
     restURL = 'http://localhost:8089/services/rest.api.php'
   } else {
     restURL = 'https://meter.peterb.in/services/rest.api.php/'
   }
-
-  
   getallbalances();
 };
-
 
 document.querySelector("#save").addEventListener("click", (e) => {
   if (document.querySelector("#meter-balance").value && parseInt(document.querySelector("#meter-balance").value) >= 0){
@@ -116,8 +126,7 @@ document.querySelector("#save").addEventListener("click", (e) => {
 });
 
 let getLastDate = (date, days) => {
-  let monthsOfYear = {0:'Jan',0:'Feb',2:'Mar',3:'Apr',4:'May',5:'Jun',6:'Jul',7:'Aug',8:'Sept',9:'Oct',10:'Nov',11:'Dec',};
-  var result = new Date(); // not instatiated with date!!! DANGER
+  let result = new Date(); // not instatiated with date!!! DANGER
   result.setDate(date.getDate() + days);
   // return result.getDate();
   return `${result.getDate()} ${monthsOfYear[result.getMonth()]}, ${result.getFullYear()}`;
@@ -173,9 +182,3 @@ document.querySelectorAll('[time-period]').forEach(button =>
       
   })
 );
-
-
-
-
-
-
