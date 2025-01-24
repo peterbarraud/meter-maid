@@ -20,7 +20,7 @@ Object.freeze(InfoMessageType);
 let balanceData = [];
 
 let restURL = 'http://localhost:8089/services/rest.api.php';
-let monthsOfYear = {0:'Jan',0:'Feb',2:'Mar',3:'Apr',4:'May',5:'Jun',6:'Jul',7:'Aug',8:'Sept',9:'Oct',10:'Nov',11:'Dec',};
+let monthsOfYear = {0:'Jan',1:'Feb',2:'Mar',3:'Apr',4:'May',5:'Jun',6:'Jul',7:'Aug',8:'Sept',9:'Oct',10:'Nov',11:'Dec',};
 
 
 let infoBoxUpdate = (infoMsg, infoMsgType) =>{
